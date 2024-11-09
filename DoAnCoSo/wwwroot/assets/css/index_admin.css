@@ -1,0 +1,222 @@
+﻿:root {
+    --primary-green: #2e7d32;
+    --light-green: #e8f5e9;
+    --medium-green: #81c784;
+    --hover-green: #1b5e20;
+    --border-color: #ddd;
+    --primary-color: #307678;
+    --secondary-color: #7cb77b;
+    --light-color: #e6f0f0;
+    --dark-color: #307678;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--light-green);
+}
+
+.container {
+    padding: 20px;
+}
+
+/* Tab Navigation */
+.tab-container {
+    display: flex;
+    gap: 4px;
+    padding: 8px;
+    background-color: var(--light-green);
+}
+
+.tab-button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #c8e6c9;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+    .tab-button:hover {
+        background-color: #a5d6a7;
+    }
+
+    .tab-button.active {
+        background-color: var(--medium-green);
+        color: white;
+    }
+
+/* Header Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .header h2 {
+        margin: 0;
+        color: #333;
+    }
+
+.create-test-btn {
+    padding: 8px 16px;
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .create-test-btn:hover {
+        background-color: var(--hover-green);
+    }
+
+/* Test Info Panel */
+.test-info {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.test-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.difficulty-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.randomize-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Questions Table */
+.questions-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.difficulty-select {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 32px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+    .action-btn:hover {
+        color: var(--primary-green);
+    }
+
+.view-btn {
+    color: #2196F3;
+}
+
+.edit-btn {
+    color: #757575;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+    .tab-content.active {
+        display: block;
+    }
+
+/* User Management Styling */
+.user-table th, .user-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.user-table th {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    margin: 4px;
+    cursor: pointer;
+    color: white;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+}
+
+    .btn-action:hover {
+        background-color: var(--secondary-color);
+    }

@@ -1,0 +1,217 @@
+﻿:root {
+    --primary-color: #80bf78;
+    --success-color: #6ea568;
+    --background-color: #d9e8d5;
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #b5b9bd;
+    --gray-300: #dee2e6;
+    --gray-600: #6c757d;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    --border-radius: 8px;
+}
+
+/* Containers */
+.exam-form-container, .exam-dashboard {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+/* Headers */
+.form-header, .dashboard-header {
+    padding: 1.5rem 2rem;
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.form-title, .dashboard-title {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.form-subtitle {
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+/* Form Styles */
+.form-body {
+    padding: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 2.5rem;
+    color: var(--gray-600);
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-secondary {
+    background: var(--gray-200);
+    color: var(--gray-600);
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.add-exam-btn {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.exam-table {
+    width: 120%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .exam-table th {
+        background: var(--gray-100);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .exam-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+}
+
+.btn-add-questions {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--gray-600);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-600);
+    text-decoration: none;
+    margin: 1rem 2rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .exam-form-container, .exam-dashboard {
+        margin: 1rem;
+    }
+}
+
+/* Utility Classes */
+.mr-1 {
+    margin-right: 0.25rem;
+}
+
+.mr-2 {
+    margin-right: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.text-muted {
+    color: var(--gray-600);
+}

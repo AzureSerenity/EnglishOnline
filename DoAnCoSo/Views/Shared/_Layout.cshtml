@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>EnGoat - Be best among the best</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="~/img/logo/logo_head.png" rel="icon" type="image/ico">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a asp-controller="Home" asp-action="Index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <img src="~/img/logo/logo_text.png" alt="Logo" style="height: 100px; width: 200px;">
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a class="nav-item nav-link active" asp-area="" asp-controller="BaiThi" asp-action="LichSuLamBai">History Record</a>
+                    </li>
+                }
+                <a asp-controller="Home" asp-action="Index" asp-area="" class="nav-item nav-link active">Home</a>
+                <a asp-controller="Home" asp-action="Privacy" class="nav-item nav-link">Privacy</a>
+@*                 <a asp-controller="BaiTap" asp-action="Index" asp-area="" class="nav-item nav-link">Assignment</a>
+ *@                <a asp-controller="BaiThi" asp-action="Index" class="nav-item nav-link">Test</a>
+                @*                 <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                <div class="dropdown-menu fade-down m-0">
+                <a href="team.html" class="dropdown-item">Team</a>
+                <a href="testimonial.html" class="dropdown-item">Đánh giá</a>
+                </div>
+                </div> *@
+                <a asp-controller="Home" asp-action="Contact" class="nav-item nav-link">Contact</a>
+            </div>
+        </div>
+        <partial name="_LoginPartial" />
+    </nav>
+    <!-- Navbar End -->
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    @*         <div class="container">
+                &copy; 2024 - EnGoat - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div> *@
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

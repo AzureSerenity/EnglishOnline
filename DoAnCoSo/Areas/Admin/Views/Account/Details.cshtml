@@ -1,0 +1,43 @@
+﻿@model DoAnCoSo.Models.UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-3">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    <div class="user-details">
+        <h4>User Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.User.UserName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.UserName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.User.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.Email)
+            </dd>
+@*             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.User.PhoneNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.PhoneNumber)
+            </dd> *@
+            <dt class="col-sm-2">Roles</dt>
+            <dd class="col-sm-10">
+                @String.Join(", ", Model.Roles)
+            </dd>
+            <!-- Add more fields as needed -->
+        </dl>
+        <a class="btn btn-secondary" asp-action="Index">Quay lại</a>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">

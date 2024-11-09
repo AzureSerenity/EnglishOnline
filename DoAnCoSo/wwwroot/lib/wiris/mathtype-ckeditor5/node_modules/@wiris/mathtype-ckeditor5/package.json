@@ -1,0 +1,59 @@
+{
+  "name": "@wiris/mathtype-ckeditor5",
+  "version": "8.11.1",
+  "description": "MathType Web for CKEditor5 editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "ckeditor",
+    "ckeditor5",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "mathml",
+    "maths",
+    "mathtype",
+    "wiris"
+  ],
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5",
+  "homepage": "https://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "files": [
+    "dist",
+    "src",
+    "icons",
+    "theme",
+    "lang"
+  ],
+  "main": "src/plugin.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/plugin.js",
+    "./dist/*": "./dist/*",
+    "./browser/*": null,
+    "./src/*": "./src/*",
+    "./theme/*": "./theme/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node ./scripts/build-dist.mjs",
+    "build:dist": "node ./scripts/build-dist.mjs",
+    "prepare": "npm run build:dist"
+  },
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "1.17.5"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",
+    "ckeditor5": ">=43.0.0"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=43.0.0"
+  }
+}

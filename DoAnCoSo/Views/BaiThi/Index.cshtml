@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DoAnCoSo.Models.BaiThi>
+
+@{
+    ViewData["Title"] = "Test List";
+}
+
+<h1 class="mt-5 mb-5">Your Tests List</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Test's ID</th>
+                <th scope="col">Test's Name</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Total Questions</th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.MaDe)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TenBaiThi)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ThoiGianLamBai)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SoLuongCauHoi)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Mota)</td>
+                        <td>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("Display", "BaiThi", new { id = item.Id })">Start This Test</a>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning" role="alert">
+                                    <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Start This Test</a>
+                                    You need to sign in or register to use this feature.
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">Không có đề thi.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Index" asp-controller="Home">Trở về</a>
+</div>

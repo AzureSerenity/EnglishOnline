@@ -1,0 +1,207 @@
+﻿@model DoAnCoSo.Models.AddQuestionsViewModel
+@{
+    ViewData["Title"] = "Add Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/assets/css/display_question.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="questions-container">
+        <div class="header-section">
+            <h1 class="page-title">Choose questions to add</h1>
+
+            <div class="filters-section">
+                <div class="filter-item">
+                    <label class="filter-label">Level:</label>
+                    <select id="levelFilter" class="filter-select">
+                        <option value="">All Levels</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label class="filter-label">Type:</label>
+                    <select id="typeFilter" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="Reading">Reading</option>
+                        <option value="Listening">Listening</option>
+                        <option value="Writing">Writing</option>
+                    </select>
+                </div>
+
+                <div class="search-box">
+                    <i class="search-icon">🔍</i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search questions...">
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="AddQuestionsToExam" method="post">
+            <input type="hidden" asp-for="BaiThiId" />
+            <div>
+                <button type="submit" class="submit-btn">Add Selected Questions</button>
+            </div>
+
+            <div class="table-container">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th width="5%">
+                                <input type="checkbox" class="custom-checkbox" id="selectAll" />
+                            </th>
+                            <th width="20%">Question</th>
+                            <th width="5%">Type</th>
+                            <th width="6%">Level</th>
+                            <th width="20%">Audio</th>
+                            <th width="10%">Image</th>
+                            <th width="15%">Paragraph</th>
+                            <th width="12%">Answers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var question in Model.Questions)
+                        {
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                            }
+
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="SelectedQuestionIds" value="@question.Mach" class="custom-checkbox question-checkbox" />
+                                </td>
+                                <td class="truncate">
+                                    <div title="@question.Cauhoi">@Html.Raw(@question.Cauhoi)</div>
+                                </td>
+                                <td>@question.LoaiCauHoi.ToString()</td>
+                                <td>@question.Level</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(question.FileAudio))
+                                    {
+                                        <div class="audio-container">
+                                            <audio controls>
+                                                <source src="~/upload/@question.FileAudio" type="audio/mp3" />
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(question.FileImage))
+                                    {
+                                        <img src="~/upload/@question.FileImage" alt="Question Image" class="media-preview" loading="lazy" />
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(question.TextParagraph))
+                                    {
+                                        <div class="paragraph-content" title="@question.TextParagraph">
+                                            @question.TextParagraph
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <ul>
+                                        @foreach (var answer in question.DapAns)
+                                        {
+                                            <li>
+                                                @answer.AnswerText @if (answer.IsAnswer)
+                                                {
+                                                    <strong style="color: green;">(Corrcect)</strong>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Existing selectAll functionality
+        document.getElementById('selectAll').addEventListener('change', function () {
+            var checkboxes = document.getElementsByClassName('question-checkbox');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        });
+
+        // Filtering functionality
+        function filterQuestions() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const levelValue = document.getElementById('levelFilter').value;
+            const typeValue = document.getElementById('typeFilter').value;
+            
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            
+            rows.forEach(row => {
+                const question = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const type = row.querySelector('td:nth-child(3)').textContent;
+                const level = row.querySelector('td:nth-child(4)').textContent;
+                
+                const matchesSearch = question.includes(searchValue);
+                const matchesLevel = !levelValue || level === levelValue;
+                const matchesType = !typeValue || type === typeValue;
+                
+                row.style.display = matchesSearch && matchesLevel && matchesType ? '' : 'none';
+            });
+        }
+
+        // Add event listeners for filters
+        document.getElementById('searchInput').addEventListener('input', filterQuestions);
+        document.getElementById('levelFilter').addEventListener('change', filterQuestions);
+        document.getElementById('typeFilter').addEventListener('change', filterQuestions);
+
+        document.querySelectorAll('.media-preview').forEach(img => {
+            img.addEventListener('click', function () {
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0,0,0,0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                        cursor: pointer;
+                    `;
+
+                const enlargedImg = document.createElement('img');
+                enlargedImg.src = this.src;
+                enlargedImg.style.cssText = `
+                        max-width: 90%;
+                        max-height: 90vh;
+                        object-fit: contain;
+                    `;
+
+                modal.appendChild(enlargedImg);
+                document.body.appendChild(modal);
+
+                modal.onclick = () => modal.remove();
+            });
+        });
+
+        // Enhance table row hover effect
+        document.querySelectorAll('.custom-table tbody tr').forEach(row => {
+            row.addEventListener('mouseover', function () {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+            row.addEventListener('mouseout', function () {
+                this.style.backgroundColor = '';
+            });
+        });
+    </script>
+</body>
+</html>

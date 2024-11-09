@@ -1,0 +1,104 @@
+﻿@model DoAnCoSo.Models.CauHoi
+
+@{
+    ViewData["Title"] = "Edit Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit Question</h1>
+<hr />
+<form asp-action="EditQuestion" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Mach" />
+
+    <!-- Câu hỏi -->
+    <div class="form-group">
+        <label asp-for="Cauhoi" class="control-label">Question</label>
+        <textarea asp-for="Cauhoi" class="form-control"></textarea>
+        <span asp-validation-for="Cauhoi" class="text-danger"></span>
+    </div>
+
+    <!-- Level -->
+    <div class="form-group">
+        <label asp-for="Level">Level</label>
+        <select asp-for="Level" class="form-control">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+    </div>
+
+    <!-- Loại câu hỏi -->
+    <div class="form-group">
+        <label asp-for="LoaiCauHoi">Type</label>
+        <select asp-for="LoaiCauHoi" class="form-control" id="LoaiCauHoi">
+            <option value="Listening">Listening</option>
+            <option value="Reading">Reading</option>
+            <option value="Writing">Writing</option>
+        </select>
+    </div>
+
+    <!-- File Image -->
+    <div class="form-group">
+        <label for="newImage">Image File (Optional)</label>
+        <input type="file" name="newImage" class="form-control" accept=".jpg, .jpeg, .png" />
+        @if (!string.IsNullOrEmpty(Model.FileImage))
+        {
+            <img src="~/upload/@Model.FileImage" alt="Question Image" style="max-width: 100px; max-height: 100px;" />
+        }
+    </div>
+
+    <!-- File Audio -->
+    <div class="form-group" id="audioFileGroup">
+        <label for="newAudio">Audio File (Optional)</label>
+        <input type="file" name="newAudio" class="form-control" accept=".mp3, .wav" />
+        @if (!string.IsNullOrEmpty(Model.FileAudio))
+        {
+            <audio controls>
+                <source src="~/upload/@Model.FileAudio" type="audio/mp3" />
+                Your browser does not support the audio element.
+            </audio>
+        }
+    </div>
+
+    <!-- Đoạn văn -->
+    <div class="form-group" id="textParagraphGroup">
+        <label asp-for="TextParagraph">Text Paragraph</label>
+        <textarea asp-for="TextParagraph" name="newReadingContent" class="form-control"></textarea>
+    </div>
+
+    <!-- Đáp Án -->
+    <div class="form-group">
+        <label for="answers">Answers:</label>
+        <div id="answersContainer">
+            @foreach (var answer in Model.DapAns)
+            {
+                <div class="answerRow">
+                    <input type="text" name="answers" class="form-control" value="@answer.AnswerText" />
+                    <input type="checkbox" name="isCorrectAnswers" value="true" @(answer.IsAnswer ? "checked" : "") /> Correct
+                    <input type="hidden" name="isCorrectAnswers" value="false" />
+                </div>
+            }
+        </div>
+        <button type="button" id="addAnswer" class="btn btn-success">More Answer</button>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('addAnswer').addEventListener('click', function () {
+            const answersContainer = document.getElementById('answersContainer');
+            const newAnswerRow = document.createElement('div');
+            newAnswerRow.classList.add('answerRow');
+            newAnswerRow.innerHTML = `
+                                <input type="text" name="answers" class="form-control" placeholder="Enter the answer" />
+                                <input type="checkbox" name="isCorrectAnswers" value="true" /> Correct
+                                <input type="hidden" name="isCorrectAnswers" value="false" />
+                            `;
+            answersContainer.appendChild(newAnswerRow);
+        });
+    </script>
+}

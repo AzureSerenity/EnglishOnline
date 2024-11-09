@@ -1,0 +1,224 @@
+﻿@model IEnumerable<DoAnCoSo.Models.CauHoi>
+
+@{
+    ViewBag.Title = "Vào Thi";
+    Layout = "~/Views/Shared/_ExamLayout.cshtml";
+}
+
+<h2 class="text-center">Bài thi</h2>
+<div id="countdown-clock" class="text-center"></div>
+
+@using (Html.BeginForm("KetQua", "BaiThi", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="StartTime" id="startTime" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                @foreach (var item in Model)
+                {
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <strong><h5 class="card-title">@Html.Raw(@item.Cauhoi)</h5></strong>
+
+                            @if (!string.IsNullOrEmpty(item.FileImage))
+                            {
+                                <div class="question-image">
+                                    <img src="@Url.Content("~/url_file/images/" + item.FileImage)" alt="Question Image" class="img-fluid" />
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(item.FileAudio))
+                            {
+                                <div class="question-audio mt-3">
+                                    <audio controls>
+                                        <source src="@Url.Content("~/url_file/sound/" + item.FileAudio)" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            }
+
+                            @foreach (var answer in item.DapAns)
+                            {
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="question-@item.Mach" value="@answer.AnswerText" />
+                                    <label class="form-check-label">@answer.AnswerText</label>
+                                </div>
+                            }
+
+                            <input type="hidden" name="MaCauHoi" value="@item.Mach" />
+                        </div>
+                    </div>
+                }
+                @if (Model.Any())
+                {
+                    <input type="hidden" name="id" value="@Model.First().BaiThi_CauHois." />
+                    <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Nộp bài</button>
+                }
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Số câu đã làm</h5>
+                        <div class="answers-status card-text">
+                            @foreach (var item in Model)
+                            {
+                                <div class="answer-circle" id="answer-circle-@item.Mach">
+                                    <span>@item.Mach</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var startTime = sessionStorage.getItem('examStartTime');
+            if (!startTime) {
+                startTime = new Date().toISOString();
+                sessionStorage.setItem('examStartTime', startTime);
+            }
+            document.getElementById('startTime').value = startTime;
+
+            var now = new Date().getTime();
+            var defaultTime = @ViewBag.Thoigianthi * 60; // Chuyển đổi phút sang giây từ server
+            var timeInSeconds = startTime ? (defaultTime - Math.floor((now - new Date(startTime).getTime()) / 1000)) : defaultTime;
+
+            var countdownClock = document.getElementById('countdown-clock');
+            var countdownInterval = setInterval(function () {
+                var hours = Math.floor(timeInSeconds / 3600);
+                var minutes = Math.floor((timeInSeconds % 3600) / 60);
+                var seconds = timeInSeconds % 60;
+                var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                countdownClock.textContent = formattedTime;
+
+                timeInSeconds--;
+
+                if (timeInSeconds <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownClock.textContent = 'Hết giờ!';
+                    document.querySelector('form').submit(); // Tự động nộp bài khi hết giờ
+                }
+            }, 1000);
+
+            var listAnswer = new Array(@Model.Count()); // Khởi tạo mảng listAnswer với độ dài bằng số lượng câu hỏi
+
+            document.querySelectorAll('input[type="radio"]').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    var questionNumber = this.name.match(/\d+/)[0]; // Lấy số của câu hỏi từ tên của radio button
+                    var answerCircle = document.getElementById('answer-circle-' + questionNumber);
+                    if (answerCircle) {
+                        answerCircle.classList.add('answered');
+                    }
+
+                    // Lấy giá trị của câu trả lời đã chọn và thêm vào danh sách listAnswer
+                    var selectedAnswer = this.value;
+                    listAnswer[parseInt(questionNumber) - 1] = selectedAnswer; // Giả sử listAnswer được đánh số từ 0
+                });
+            });
+
+            // Gửi mảng listAnswer lên server khi người dùng nộp bài
+            var submitButton = document.getElementById('submitBtn');
+            submitButton.addEventListener('click', function (event) {
+
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'listAnswer';
+                hiddenInput.value = JSON.stringify(listAnswer);
+                this.form.appendChild(hiddenInput);
+            });
+        });
+
+        // Ngăn quay lại trang
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+    </script>
+}
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .question-number {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 10px;
+    }
+
+    .form-check-label {
+        margin-bottom: 10px;
+    }
+
+    .side-bar {
+        float: left;
+        width: 200px;
+    }
+
+    .main-content {
+        float: right;
+        width: calc(100% - 200px);
+    }
+
+    .btn-submit {
+        margin-top: 20px;
+    }
+
+    .form-check-input:checked + .form-check-label {
+    }
+
+    .answers-status {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .answer-circle {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        margin: 2px;
+    }
+
+        .answer-circle.answered {
+            background-color: #198754; /* Bootstrap success color */
+            color: white;
+        }
+
+        .answer-circle span {
+            color: #fff;
+        }
+
+    #countdown-clock {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #000;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        z-index: 1000; /* Đảm bảo đồng hồ hiển thị trên các phần tử khác */
+        font-size: 18px;
+    }
+</style>

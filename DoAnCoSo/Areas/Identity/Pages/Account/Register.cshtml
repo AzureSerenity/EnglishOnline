@@ -1,0 +1,333 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutNavbar.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #80bf78;
+            --primary-light: #a3d49d;
+            --primary-dark: #5f9658;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .register-container {
+             width: 100%;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .register-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+            .register-form:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .register-header h2 {
+                color: var(--primary-dark);
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+        .form-floating {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+            .form-floating input {
+                border: 2px solid #e0e0e0;
+                padding: 15px;
+                transition: all 0.3s ease;
+            }
+
+                .form-floating input:focus {
+                    border-color: var(--primary-color);
+                    box-shadow: 0 0 0 0.25rem rgba(128, 191, 120, 0.25);
+                }
+
+            .form-floating label {
+                color: #666;
+                padding-left: 13px;
+            }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            z-index: 10;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--primary-dark);
+                border-color: var(--primary-dark);
+                transform: translateY(-2px);
+            }
+
+        .social-login {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .social-login-title {
+            position: relative;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+            .social-login-title:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 45%;
+                height: 1px;
+                background: #e0e0e0;
+            }
+
+            .social-login-title:after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 50%;
+                width: 45%;
+                height: 1px;
+                background: #e0e0e0;
+            }
+
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .social-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e0e0e0;
+            background: white;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+            .social-button:hover {
+                transform: translateY(-3px);
+                color: white;
+            }
+
+            .social-button.facebook:hover {
+                background: #1877f2;
+                border-color: #1877f2;
+            }
+
+            .social-button.google:hover {
+                background: #db4437;
+                border-color: #db4437;
+            }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+            .register-footer a {
+                color: var(--primary-dark);
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s ease;
+            }
+
+                .register-footer a:hover {
+                    color: var(--primary-color);
+                    text-decoration: underline;
+                }
+
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+
+        .requirement {
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .requirement i {
+                font-size: 0.8rem;
+            }
+
+            .requirement.valid {
+                color: var(--primary-color);
+            }
+
+            .requirement.invalid {
+                color: #dc3545;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-form">
+            <div class="register-header">
+                <h2>Create Account</h2>
+                <p class="text-muted">Join us today! It only takes a few steps</p>
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.FullName" class="form-control" autocomplete="name" aria-required="true" placeholder="Full Name" />
+                    <label><i class="fas fa-user me-2"></i>Full Name</label>
+                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com" />
+                    <label><i class="fas fa-envelope me-2"></i>Email Address</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" type="password" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                    <label><i class="fas fa-lock me-2"></i>Password</label>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword(this)"></i>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <div class="password-requirements">
+                        <div class="requirement" id="length"><i class="fas fa-circle"></i>At least 8 characters</div>
+                        <div class="requirement" id="uppercase"><i class="fas fa-circle"></i>One uppercase letter</div>
+                        <div class="requirement" id="lowercase"><i class="fas fa-circle"></i>One lowercase letter</div>
+                        <div class="requirement" id="number"><i class="fas fa-circle"></i>One number</div>
+                        <div class="requirement" id="special"><i class="fas fa-circle"></i>One special character</div>
+                    </div>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" type="password" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
+                    <label><i class="fas fa-lock me-2"></i>Confirm Password</label>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword(this)"></i>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <div class="social-login">
+                <div class="social-login-title">
+                    <span class="px-3">Or Sign Up With</span>
+                </div>
+                <div class="social-buttons">
+                    <button class="social-button facebook" title="Sign up with Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button class="social-button google" title="Sign up with Google">
+                        <i class="fab fa-google"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="register-footer">
+                <p>Already have an account? <a href="/Identity/Account/Login">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword(button) {
+            const input = button.parentElement.querySelector('input');
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.classList.remove('fa-eye');
+                button.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                button.classList.remove('fa-eye-slash');
+                button.classList.add('fa-eye');
+            }
+        }
+
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function () {
+                $('#registerSubmit').prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-2"></span>Creating Account...');
+            });
+
+            // Password strength checker
+            const password = document.querySelector('input[type="password"]');
+            password.addEventListener('input', function () {
+                const value = this.value;
+
+                // Update requirements
+                document.getElementById('length').className =
+                    'requirement ' + (value.length >= 8 ? 'valid' : 'invalid');
+                document.getElementById('uppercase').className =
+                    'requirement ' + (/[A-Z]/.test(value) ? 'valid' : 'invalid');
+                document.getElementById('lowercase').className =
+                    'requirement ' + (/[a-z]/.test(value) ? 'valid' : 'invalid');
+                document.getElementById('number').className =
+                    'requirement ' + (/[0-9]/.test(value) ? 'valid' : 'invalid');
+                document.getElementById('special').className =
+                    'requirement ' + (/[^A-Za-z0-9]/.test(value) ? 'valid' : 'invalid');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Design</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        #navbar {
+            background-color: #80bf78;
+            color: #fff;
+        }
+
+            #navbar a {
+                color: #fff;
+            }
+
+        #sidebar {
+            background-color: #6c757d;
+            min-width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 1rem;
+        }
+
+            #sidebar .profile {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+                #sidebar .profile img {
+                    width: 80px;
+                    border-radius: 50%;
+                }
+
+            #sidebar nav {
+                flex-grow: 1;
+            }
+
+                #sidebar nav ul {
+                    list-style: none;
+                    padding: 0;
+                }
+
+                    #sidebar nav ul li {
+                        margin: 0.5rem 0;
+                    }
+
+                        #sidebar nav ul li a {
+                            color: #A5AEB6;
+                            display: block;
+                            padding: 0.5rem 1rem;
+                            text-decoration: none;
+                        }
+
+                            #sidebar nav ul li a:hover {
+                                background-color: #80bf78;
+                            }
+
+        #main-content {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+        <a asp-controller="Home" asp-action="Index" asp-area="" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>EnGoat</h2>
+        </a>        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user"></i> @User.Identity.Name</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" type="submit" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <!-- Phần profile -->
+        <div class="profile">
+            <img src="~/img/notification/avatar.png" alt="Profile Picture">
+            <h3>@User.Identity.Name</h3>
+        </div>
+        <nav>
+            <ul>
+                <!-- Các mục trong sidebar -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="personalInfoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-home"></i> Profile Information
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="personalInfoDropdown">
+@*                         <a class="dropdown-item" href="index.html">Thông tin người dùng</a>
+ *@                        <a class="dropdown-item" href="index-1.html">Change Email</a>
+@*                         <a class="dropdown-item" href="index-2.html">Xác thực 2 lớp</a>
+ *@                    </div>
+                </li>
+@*                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="mailboxDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-envelope"></i> Mailbox
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="mailboxDropdown">
+                        <a class="dropdown-item" href="mailbox.html">Hộp thư đến</a>
+                        <a class="dropdown-item" href="mailbox-compose.html">Gửi phản hồi</a>
+                    </div>
+                </li> *@
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="historyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-history"></i> Activity Log
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="historyDropdown">
+                        <a class="dropdown-item" asp-action="LichSuLamBai" asp-controller="BaiThi" , asp-area="">Submission History</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="otherDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-key"></i> Other
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="otherDropdown">
+                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account" asp-area="">Change Password</a>
+                    </div>
+                </li>
+                <!-- Thêm liên kết cho các chức năng -->
+                <li>
+                    <a href="/Logout"><i class="fas fa-sign-out-alt"></i> Sign out</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="container">
+            <h2>Welcome to EnGoat</h2>
+            <p>Have a nice day.</p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @* <link rel="icon" type="image/png" href="~/Content/images/logo-removebg.png"> *@
+    <title>@ViewBag.Title - EnGoat</title>
+    <!-- Thay thế Styles.Render bằng thẻ link trực tiếp -->
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Đường dẫn đến modernizr, nếu bạn sử dụng -->
+    <script src="~/lib/modernizr/modernizr.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a asp-controller="" asp-action="" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+                    <img src="~/img/logo/logo_text.png" alt="Logo" style="height: 100px; width: 200px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <!-- Menu items -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Đồ Án</p>
+    </footer>
+
+    <!-- Thay thế Scripts.Render bằng thẻ script trực tiếp -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Không cần RenderSection("scripts") nếu bạn không có custom scripts từ các view cụ thể -->
+    @RenderSection("scripts", required: false)
+</body>
+</html>
